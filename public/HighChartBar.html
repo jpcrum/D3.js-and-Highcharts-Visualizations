@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Highcharts Example</title>
+    <!-- Add the necessary  JavaScript inclusions in the head of the page -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript" src="http://code.highcharts.com/modules/data.js"></script>
+        <style type="text/css">${demo.css}
+        </style>
+        <script type="text/javascript">
+    $(function () {
+    //Determine chart type, title, x axis, and y axis
+
+
+    var options = {
+        chart: {
+            renderTo: 'container',
+            defaultSeriesType: 'column'
+        },
+        title: {
+            text: 'Government Spending as Percentage of GDP'
+        },
+        xAxis: {
+            categories: [],
+        },
+        yAxis: {
+            title: {
+                text: 'Percent of GDP'
+            }
+        },
+      series: []
+    };
+    //call the csv data
+    $.get('government.csv', function(data) {
+        // Split the lines
+        var lines = data.split('\n');
+
+        // Iterate over the lines and add categories
+        $.each(lines, function(lineNo, line) {
+            var items = line.split(',');
+
+            // header line containes categories
+            if (lineNo == 0) {
+                $.each(items, function(itemNo, item) {
+                    if (itemNo > 0) options.xAxis.categories.push(item);
+                });
+            }
+
+            // the rest of the lines contain data with their name in the first position
+            else {
+                var series = {
+                    data: []
+                };
+                $.each(items, function(itemNo, item) {
+                    if (itemNo == 0) {
+                        series.name = item;
+                    } else {
+                        series.data.push(parseFloat(item));
+                    }
+                });
+
+                options.series.push(series);
+
+            }
+
+        });
+
+    // Create the chart
+    var chart = new Highcharts.Chart(options);
+    });
+});
+</script>
+    </head>
+    <body>
+        <!-- Add the container to draw the chart in-->
+        <div id="container" style="width: 1000px; height: 600px; margin: 0 auto"></div>
+    </body>
+</html>

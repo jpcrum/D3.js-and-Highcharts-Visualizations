@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Highcharts Example</title>
+    <!-- Add the JavaScript inclusions in the head of the page -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript" src="http://code.highcharts.com/modules/data.js"></script>
+        <style type="text/css">${demo.css}
+        </style>
+        <script type="text/javascript">
+    $(function () {
+
+    //call the data
+    $.get('co2.csv', function(data) {
+        //bind the data to the container
+        $('#container').highcharts({
+            //Determine chart type, title, x axis, and y axis using highcharts api
+            chart: {
+                defaultSeriesType: 'line'
+            },
+           data: {
+                csv: data
+            },
+
+           series: [{
+            name: 'Random data',
+            data: data
+            }],
+            title: {
+                text: 'CO2 Emissions of Top 10 Most Polluting Countries'
+            },
+            xAxis: {
+                title: {
+                    text: 'Year'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'CO2 Emissions (kilotons)'
+                }
+            }
+        });
+    });
+
+});
+
+</script>
+
+    </head>
+    <body>
+
+        <!-- Add the container -->
+        <div id="container" style="width: 800px; height: 600px; margin: 0 auto"></div>
+
+
+    </body>
+</html>
